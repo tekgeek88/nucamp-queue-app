@@ -5,6 +5,9 @@
   "main": "main.js",
   "author": "Carl Argabright and Luke Gillmore",
   "license": "MIT",
+  "engines": {
+    "node": "12.9.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node main.js",
