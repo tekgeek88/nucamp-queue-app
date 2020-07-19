@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router({ mergeParams: true });
 import User from '../../../database/schemas/user'
 
-/* POST register a new user. */
+/* POST: Register a new user. */
 router.use('/signup', require('./signup'));
 
-/*  POST sign a user in*/
+/*  POST: Sign in a user */
 router.use('/login', require('./login'));
 
-/*  DELETE logs the current user out if a session exists*/
+/*  DELETE: Logs current user out if a session exists */
 router.use('/logout', require('./logout'));
 
 /* GET all users */

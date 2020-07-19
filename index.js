@@ -24,5 +24,3 @@ createDatabase()
     console.log("Error starting server: " + err)
   });
 
-console.log("Index.js is finished!");
-

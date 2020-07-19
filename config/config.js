@@ -8,4 +8,7 @@ export const {
   PORT = process.env.PORT,
   NODE_ENV = process.env.NODE_ENV,
   databaseURL = process.env.MONGODB_URL,
+  SESS_NAME = process.env.SESS_NAME,
+  SESS_SECRET = process.env.SESS_SECRET,
+  SESS_LIFETIME = process.env.SESS_LIFETIME,
 } = process.env;

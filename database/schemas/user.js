@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+import { compareSync, hashSync } from 'bcryptjs';
 
 const UserSchema = new Schema({
   firstname: {
@@ -19,6 +20,10 @@ const UserSchema = new Schema({
       message: "Email already exists"
     }
   },
+  password: {
+    type: String,
+    required: true
+  },
   role: {
     type: String,
     required: true
@@ -33,6 +38,10 @@ UserSchema.pre('save', function () {
 
 UserSchema.statics.doesNotExist = async function (field) {
   return await this.where(field).countDocuments() === 0;
+};
+
+UserSchema.methods.comparePasswords = function (password) {
+  return compareSync(password, this.password);
 };
 
 UserSchema.methods.getInitials = function() {
