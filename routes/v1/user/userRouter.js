@@ -1,3 +1,5 @@
+import auth_required from "../../../middleware/auth_required";
+
 var express = require('express');
 var router = express.Router({ mergeParams: true });
 import User from '../../../database/schemas/user'
@@ -9,7 +11,7 @@ router.use('/signup', require('./signup'));
 router.use('/login', require('./login'));
 
 /*  DELETE: Logs current user out if a session exists */
-router.use('/logout', require('./logout'));
+router.use('/logout', auth_required, require('./logout'));
 
 /* GET all users */
 router.route('/')
