@@ -4,21 +4,28 @@ const Schema = mongoose.Schema;
 const QueueItemSchema = new Schema({
   startTime: {
     type: Date,
-    required: false
+    required: false,
+    default: null
   },
   endTime: {
     type: Date,
-    required: false
+    required: false,
+    default: null
   },
-  payload: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   }
 }, {
   timestamps: true
 });
 
 const QueueSchema = new Schema({
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   name: {
     type: String,
     required: true
@@ -27,7 +34,7 @@ const QueueSchema = new Schema({
     type: String,
     required: true
   },
-  items: [QueueItemSchema],
+  items: [QueueItemSchema]
 }, {timestamps: true});
 
 const Queue = mongoose.model('Queue', QueueSchema);
