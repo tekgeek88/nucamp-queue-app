@@ -3,7 +3,7 @@ import User from '../database/schemas/user'
 
 const isEmpty = require("is-empty");
 
-export default async function validateLoginInput(req) {
+export default async function validateQueueItem(req) {
   let errors = [];
 
   let {userId} = req.body;

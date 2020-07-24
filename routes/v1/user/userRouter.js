@@ -14,7 +14,7 @@ router.use('/login', require('./login'));
 router.use('/logout', auth_required, require('./logout'));
 
 /* GET all users */
-router.route('/')
+router.route('/', auth_required)
   .get((req, res, next) => {
     User.find()
       .then(users => {
