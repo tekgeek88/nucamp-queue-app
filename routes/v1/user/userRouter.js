@@ -4,6 +4,8 @@ var express = require('express');
 var router = express.Router({ mergeParams: true });
 import User from '../../../database/schemas/user'
 
+/*  GET: Get the users session if one exists */
+router.use('/isLoggedIn', require('./isLoggedIn'));
 /* POST: Register a new user. */
 router.use('/signup', require('./signup'));
 
