@@ -6,8 +6,8 @@ import {
 const _nullSession = {
   userId: null,
   email: null,
-  firstName: null,
-  lastName: null,
+  firstname: null,
+  lastname: null,
   role: ""
 };
 

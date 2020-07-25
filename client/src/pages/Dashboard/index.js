@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Switch} from "react-router-dom";
+import {ProtectedRoute} from "../../utils/route";
 import {withStyles} from '@material-ui/core/styles';
-
-import {ProtectedAdminRoute, ProtectedRoute} from "../../utils/route";
 import DashboardHome from "./DashboardHome";
 import Queue from "./Queue";
 
@@ -22,17 +21,15 @@ let Dashboard = (props) => {
   return (
     <Switch>
       <ProtectedRoute exact path="/dashboard" component={DashboardHome}/>
-      <ProtectedRoute path="/dashboard/queue" component={Queue}/>
+      <ProtectedRoute exact path="/dashboard/queue/:queueId" component={Queue}/>
     </Switch>
   );
 };
 
 const mapStateToProps = (state) => {
-  console.log("Mapping state to props from dashboard");
-  console.log(state);
-  const {session, queue} = state;
+  const {session} = state;
   return {
-    session, queue
+    session
   }
 };
 

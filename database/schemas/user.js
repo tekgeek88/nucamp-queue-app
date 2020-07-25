@@ -45,7 +45,7 @@ UserSchema.methods.comparePasswords = function (password) {
 };
 
 UserSchema.methods.getInitials = function() {
-  return this.firstName[0] + this.lastName[0];
+  return this.firstname[0] + this.lastname[0];
 };
 
 // export model user with UserSchema

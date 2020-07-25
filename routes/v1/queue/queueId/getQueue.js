@@ -5,13 +5,13 @@ import Queue from "../../../../database/schemas/queue";
 /* GET: Get a queue by id. */
 router.get('/', async (req, res) => {
   const queue = await Queue.findById(req.params.queueId)
-    .populate('items.userId', {
+    .populate('owner', {
       _id: 1,
       firstname: 1,
       lastname: 1,
       email: 1
     })
-    .populate('owner', {
+    .populate('items.userId', {
       _id: 1,
       firstname: 1,
       lastname: 1,

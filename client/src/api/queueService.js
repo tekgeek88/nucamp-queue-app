@@ -57,8 +57,8 @@ export const signup = async user => {
 const _nullSession = {
   userId: null,
   email: null,
-  firstName: null,
-  lastName: null,
+  firstname: null,
+  lastname: null,
 };
 
 export const checkLoggedIn = async () => {
@@ -70,19 +70,16 @@ export const checkLoggedIn = async () => {
   });
   const {user} = await response.json();
 
-  // const {userId="", email="", firstName="", lastName=""} = user;
+
   let preloadedState = _nullSession;
   if (user) {
     preloadedState = {
       session: {
         userId: user.userId ? user.userId : "",
         email: user.email ? user.email : "",
-        firstName: user.firstName ? user.firstName : "",
-        lastName: user.lastName ? user.lastName : "",
+        firstname: user.firstname ? user.firstname : "",
+        lastname: user.lastname ? user.lastname : "",
         role: user.role ? user.role : "",
-        connections: [],
-        selectedOption: {},
-        userConnections: []
       }
     };
   }
@@ -98,6 +95,25 @@ export const fetchAllQueues = async (user) => {
     },
     method: 'get',
     url: '/api/v1/queue'
+  })
+    .then(response => {
+      result = response;
+    })
+    .catch(err => {
+      result = err.response
+    });
+  return result;
+};
+
+export const fetchQueue = async (queueId) => {
+  let result = {};
+  await axios({
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    method: 'get',
+    url: `/api/v1/queue/${queueId}`
   })
     .then(response => {
       result = response;

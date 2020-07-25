@@ -29,8 +29,7 @@ module.exports = function buildApp() {
       sameSite: false,
       // secure: NODE_ENV === 'production',
       secure: false,
-      maxAge: 900000
-      // maxAge: parseInt(SESS_LIFETIME)
+      maxAge: parseInt(SESS_LIFETIME)
     }
   }));
 
