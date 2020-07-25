@@ -21,7 +21,7 @@ export const login = async (user) => {
       'Accept': 'application/json',
     },
     method: 'post',
-    url: '/api/v1/users/login',
+    url: '/api/v1/user/login',
     data: user
   })
     .then(response => {
@@ -35,7 +35,7 @@ export const login = async (user) => {
 
 export const logout = async () => {
   console.log("Attempting to log out");
-  return await fetch("/api/v1/users/logout", {
+  return await fetch("/api/v1/user/logout", {
     method: "DELETE", headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
