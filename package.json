@@ -17,6 +17,7 @@
     "heroku-postbuild": "cd client && yarn install && yarn build"
   },
   "dependencies": {
+    "and": "^0.0.3",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^3.2.0",
     "cors": "^2.8.5",
@@ -27,6 +28,9 @@
     "is-empty": "^1.2.0",
     "mongoose": "^5.9.25",
     "morgan": "^1.10.0",
+    "react": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux-form": "^8.3.6",
     "validator": "^13.1.1"
   },
   "devDependencies": {
