@@ -4,3 +4,12 @@ export const LOGOUT_CURRENT_USER = "LOGOUT_CURRENT_USER";
 export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
+/*------~+=={    QUEUE ACTIONS    }===~------*/
+export const RECEIVE_QUEUES = "RECEIVE_QUEUES";
+export const RECEIVE_QUEUE = "RECEIVE_QUEUE";
+export const REMOVE_QUEUE = "REMOVE_QUEUE";
+
+/*------~+=={    QUEUE ITEM ACTIONS    }===~------*/
+export const RECEIVE_QUEUE_ITEM_PEEK = "RECEIVE_QUEUE_ITEM_PEEK";
+export const DEQUEUE_START_NEXT_ITEM = "DEQUEUE_START_NEXT_ITEM";
+export const DEQUEUE_FINISH_NEXT_ITEM = "DEQUEUE_FINISH_NEXT_ITEM";

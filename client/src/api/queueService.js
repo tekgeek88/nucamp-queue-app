@@ -82,3 +82,22 @@ export const checkLoggedIn = async () => {
   }
   return preloadedState;
 };
+
+export const fetchQueues = async (user) => {
+  let result = {};
+  await axios({
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    method: 'get',
+    url: '/api/v1/queue'
+  })
+    .then(response => {
+      result = response;
+    })
+    .catch(err => {
+      result = err.response
+    });
+  return result;
+};

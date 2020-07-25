@@ -1,6 +1,6 @@
 import {clearErrors, receiveErrors} from "./error";
 import {LOGOUT_CURRENT_USER, RECEIVE_CURRENT_USER} from "./actionTypes";
-import * as UserService from '../api/queueService';
+import * as QueueService from '../api/queueService';
 
 const receiveCurrentUser = user => ({
   type: RECEIVE_CURRENT_USER,
@@ -14,7 +14,7 @@ const logoutCurrentUser = () => ({
 
 export const login = user => async (dispatch) => {
   console.log("Hitting the login endpoint");
-  return await UserService.login(user)
+  return await QueueService.login(user)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
@@ -31,7 +31,7 @@ export const login = user => async (dispatch) => {
 
 
 export const signup = user => async dispatch => {
-  const response = await UserService.register(user);
+  const response = await QueueService.register(user);
   const data = await response.json();
   if (response.ok) {
     dispatch(clearErrors());
@@ -42,7 +42,7 @@ export const signup = user => async dispatch => {
 
 
 export const logout = () => async dispatch => {
-  const response = await UserService.logout();
+  const response = await QueueService.logout();
   const data = await response;
   if (response.ok) {
     return dispatch(logoutCurrentUser());

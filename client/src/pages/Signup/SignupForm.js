@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Link from '@material-ui/core/Link';
 import {Link as RouterLink} from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import Typography from "@material-ui/core/Typography";
 
 const styles = {
   link: {
@@ -91,6 +92,11 @@ class SignupForm extends React.Component {
     const {classes, handleSubmit, pristine, submitting} = this.props;
     return (
       <Grid>
+        <Grid item>
+          <Typography>
+            Signup Form
+          </Typography>
+        </Grid>
         <form
           className={classes.form} noValidate onSubmit={handleSubmit(this.onSubmit)}>
           <Field
