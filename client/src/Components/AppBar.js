@@ -73,6 +73,16 @@ const CustomAppBar = (props) => {
               About Us
             </Typography>
           </Grid>
+            {props.isLoggedIn ?
+          <Grid item>
+              <Typography
+                onClick={() => history.push(`/dashboard`)}
+                variant="button"
+                className={classes.link}>Dashboard
+              </Typography>
+          </Grid>
+              :
+              null}
           <Grid item>
             {props.isLoggedIn ?
               <Typography
