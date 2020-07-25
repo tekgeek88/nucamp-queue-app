@@ -17,7 +17,8 @@ const styles = theme => ({
 
 let Dashboard = (props) => {
   const {classes} = props;
-
+  console.log("Props from the dashboard");
+  console.log(props);
   return (
     <Switch>
       <ProtectedRoute exact path="/dashboard" component={DashboardHome}/>
@@ -27,9 +28,11 @@ let Dashboard = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const {session} = state;
+  console.log("Mapping state to props from dashboard");
+  console.log(state);
+  const {session, queue} = state;
   return {
-    session
+    session, queue
   }
 };
 

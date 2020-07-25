@@ -9,7 +9,7 @@ const receiveAllQueues = queues => ({
 
 export const fetchAllQueues = queues => async (dispatch) => {
   console.log("Fetching all queues...");
-  return await QueueService.login(queues)
+  return await QueueService.fetchAllQueues(queues)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());

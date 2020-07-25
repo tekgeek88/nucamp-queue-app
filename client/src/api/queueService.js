@@ -4,15 +4,6 @@ export default axios.create({
   baseURL: 'http://localhost:5000'
 });
 
-const _nullSession = {
-  userId: null,
-  email: null,
-  firstName: null,
-  lastName: null,
-  role: null
-};
-
-
 export const login = async (user) => {
   let result = {};
   await axios({
@@ -43,15 +34,32 @@ export const logout = async () => {
   })
 };
 
-export const register = async user => (
-  fetch("/api/v1/users/register", {
-    method: "POST",
-    body: JSON.stringify(user),
+export const signup = async user => {
+  let result = {};
+  await axios({
     headers: {
-      "Content-Type": "application/json"
-    }
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    method: 'post',
+    url: '/api/v1/user/signup',
+    data: user
   })
-);
+    .then(response => {
+      result = response;
+    })
+    .catch(err => {
+      result = err.response
+    });
+  return result;
+};
+
+const _nullSession = {
+  userId: null,
+  email: null,
+  firstName: null,
+  lastName: null,
+};
 
 export const checkLoggedIn = async () => {
   const response = await fetch('/api/v1/user/isLoggedIn', {
@@ -60,12 +68,7 @@ export const checkLoggedIn = async () => {
       'Accept': 'application/json'
     }
   });
-  let user = {};
-  try {
-    user = await response.json();
-  } catch (err) {
-    console.log("Handled that shit")
-  }
+  const {user} = await response.json();
 
   // const {userId="", email="", firstName="", lastName=""} = user;
   let preloadedState = _nullSession;
@@ -74,16 +77,19 @@ export const checkLoggedIn = async () => {
       session: {
         userId: user.userId ? user.userId : "",
         email: user.email ? user.email : "",
-        firstname: user.firstname ? user.firstname : "",
-        lastname: user.lastname ? user.lastname : "",
+        firstName: user.firstName ? user.firstName : "",
+        lastName: user.lastName ? user.lastName : "",
         role: user.role ? user.role : "",
+        connections: [],
+        selectedOption: {},
+        userConnections: []
       }
     };
   }
   return preloadedState;
 };
 
-export const fetchQueues = async (user) => {
+export const fetchAllQueues = async (user) => {
   let result = {};
   await axios({
     headers: {

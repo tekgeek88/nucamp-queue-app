@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
     req.session.user = sessionUser;
     res.status(200).json({
       success: true,
-      sessionUser
+      user: sessionUser
     });
   } catch (err) {
     return res.status(500).json({

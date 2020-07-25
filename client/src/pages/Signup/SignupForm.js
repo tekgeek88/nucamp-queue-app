@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {Field, reduxForm, SubmissionError} from 'redux-form'
-import {login} from "../../actions/session";
+import {signup} from "../../actions/session";
 import TextField from "@material-ui/core/TextField";
 import {withStyles} from '@material-ui/core/styles';
 import _ from 'lodash'
@@ -27,8 +27,11 @@ const renderFromHelper = (touched, error) => !(touched && error) ? null : touche
 const validate = values => {
   const errors = {};
   const requiredFields = [
+    'firstname',
+    'lastname',
     'email',
-    'password'
+    'password',
+    'password2'
   ];
 
   requiredFields.forEach(field => {
@@ -68,20 +71,29 @@ class SignupForm extends React.Component {
   );
 
   onSubmit = (formValues) => {
+    console.log("Submitting signup form");
     console.log("Form values:");
     console.log(formValues);
-    return this.props.login(formValues).then(() => {
+    return this.props.signup(formValues).then(() => {
       const {errors, message} = this.props.error;
       if (!_.isEmpty(errors)) {
         errors.forEach(error => {
           const myKeys = Object.keys(error);
           const key = myKeys[0];
           const value = error[key];
+          if (key === 'firstname') {
+            throw new SubmissionError({firstname: value, _error: message})
+          }
+          if (key === 'lastname') {
+            throw new SubmissionError({lastname: value, _error: message})
+          }
           if (key === 'email') {
             throw new SubmissionError({email: value, _error: message})
           }
           if (key === 'password') {
             throw new SubmissionError({password: value, _error: message})
+          }if (key === 'password2') {
+            throw new SubmissionError({password2: value, _error: message})
           }
         });
       }
@@ -89,7 +101,7 @@ class SignupForm extends React.Component {
   };
 
   render() {
-    const {classes, handleSubmit, pristine, submitting} = this.props;
+    const {classes, handleSubmit} = this.props;
     return (
       <Grid>
         <Grid item>
@@ -99,6 +111,18 @@ class SignupForm extends React.Component {
         </Grid>
         <form
           className={classes.form} noValidate onSubmit={handleSubmit(this.onSubmit)}>
+          <Field
+            name="firstname"
+            component={this.renderTextField}
+            label="First Name"
+            type="text"
+          />
+          <Field
+            name="lastname"
+            component={this.renderTextField}
+            label="Last Name"
+            type="text"
+          />
           <Field
             name="email"
             component={this.renderTextField}
@@ -111,6 +135,12 @@ class SignupForm extends React.Component {
             type="password"
             label="Password"
           />
+          <Field
+            name="password2"
+            component={this.renderTextField}
+            type="password"
+            label="Confirm Password"
+          />
 
             <Button style={{marginTop: 20}}
               type="submit"
@@ -119,15 +149,15 @@ class SignupForm extends React.Component {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Submit
             </Button>
-          <Grid container style={{padding: 20}}>
+          <Grid container style={{padding: 20}} alignItems="center">
             <Grid item xs>
               <Link component={RouterLink} to="/forgotPassword" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
+            <Grid item xs>
               <Link component={RouterLink} to="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
@@ -146,7 +176,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  login: user => dispatch(login(user))
+  signup: user => dispatch(signup(user))
 });
 
 SignupForm = withStyles(styles)(SignupForm);
@@ -156,6 +186,6 @@ SignupForm = connect(
   mapDispatchToProps)(SignupForm);
 
 export default reduxForm({
-  form: 'loginForm',
+  form: 'signupForm',
   validate
 })(SignupForm)

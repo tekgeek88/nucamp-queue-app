@@ -11,7 +11,8 @@ module.exports = function buildApp() {
   // Get an instance of an Express.js web server and start the logger
   const app = express();
   app.use(morgan('dev'));
-
+  console.log("Secret sesh:");
+  console.log(SESS_SECRET);
   // Use connect-mongo to handle adding cookies to the database
   const MongoStore = connectStore(session);
   app.use(session({
@@ -22,13 +23,14 @@ module.exports = function buildApp() {
       collection: 'sessions',
       ttl: parseInt(SESS_LIFETIME) / 1000,
     }),
-    saveUninitialized: false,
-    resave: false,
+    saveUninitialized: true,
+    resave: true,
     cookie: {
       sameSite: false,
       // secure: NODE_ENV === 'production',
       secure: false,
-      maxAge: parseInt(SESS_LIFETIME)
+      maxAge: 900000
+      // maxAge: parseInt(SESS_LIFETIME)
     }
   }));
 

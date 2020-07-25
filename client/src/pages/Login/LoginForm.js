@@ -121,13 +121,13 @@ class LoginForm extends React.Component {
             >
               Sign In
             </Button>
-          <Grid container style={{padding: 20}}>
+          <Grid container style={{padding: 20}} alignItems="center">
             <Grid item xs>
               <Link component={RouterLink} to="/forgotPassword" variant="body2">
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
+            <Grid item xs>
               <Link component={RouterLink} to="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
