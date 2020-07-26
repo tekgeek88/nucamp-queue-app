@@ -1,7 +1,7 @@
 import React from "react";
 import {Route} from "react-router-dom";
 import Homepage from "./pages/HomePage"
-import {AuthRoute, ProtectedRoute} from "./utils/route";
+import {AuthRoute, ProtectedRoute} from "./utils/routeHOC";
 import Login from "./pages/Login";
 import Products from "./pages/Products"
 import AboutUs from "./pages/AboutUs"

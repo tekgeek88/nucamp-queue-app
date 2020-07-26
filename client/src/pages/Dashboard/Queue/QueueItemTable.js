@@ -49,11 +49,8 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  // { id: '_id', align: 'left', disablePadding: true, label: 'id' },
-  { id: 'id', align: 'left', disablePadding: false, label: 'Id' },
-  { id: 'userId', align: 'left', disablePadding: false, label: 'User Id' },
   { id: 'firstname', align: 'left', disablePadding: false, label: 'First name' },
-  { id: 'lastname', align: 'right', disablePadding: false, label: 'Last name' },
+  { id: 'lastname', align: 'left', disablePadding: false, label: 'Last name' },
   { id: 'email', align: 'left', disablePadding: false, label: 'email' },
   { id: 'createdAt', align: 'left', disablePadding: false, label: 'Created At' },
   { id: 'startTime', align: 'left', disablePadding: false, label: 'Start time' },
@@ -61,7 +58,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -216,7 +213,6 @@ const QueueItemTable = (props) => {
 
   const handleClick = (event, _id) => {
     const selectedIndex = selected.indexOf(_id);
-    let newSelected = [];
     if (event.target.innerHTML) {
       history.push(`/dashboard/queue/${_id}/item`)
     }
@@ -264,31 +260,23 @@ const QueueItemTable = (props) => {
             <TableBody>
               {stableSort(props.rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+                .map((row) => {
                   const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, row._id)}
-                      // role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row._id}
                       selected={isItemSelected}
                     >
-                      <TableCell align="left">{row._id}</TableCell>
-                      <TableCell align="left">{row.userId._id}</TableCell>
                       <TableCell align="left">{row.userId.firstname}</TableCell>
                       <TableCell align="left">{row.userId.lastname}</TableCell>
                       <TableCell align="left">{row.userId.email}</TableCell>
                       <TableCell align="left">{parseDateTime(row.createdAt)}</TableCell>
                       <TableCell align="left">{row.startTime ? parseDateTime(row.startTime) : "Not started"}</TableCell>
                       <TableCell align="left">{row.endTime ? parseDateTime(row.endTime) : "Not finished"}</TableCell>
-
-                      {/*<TableCell align="left">{row.owner.email}</TableCell>*/}
-                      {/*<TableCell align="left">{parseDateTime(row.createdAt)}</TableCell>*/}
                     </TableRow>
                   );
                 })}

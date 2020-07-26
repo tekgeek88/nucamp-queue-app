@@ -68,8 +68,6 @@ class LoginForm extends React.Component {
   );
 
   onSubmit = (formValues) => {
-    console.log("Form values:");
-    console.log(formValues);
     return this.props.login(formValues).then(() => {
       const {errors, message} = this.props.error;
       if (!_.isEmpty(errors)) {
@@ -89,7 +87,7 @@ class LoginForm extends React.Component {
   };
 
   render() {
-    const {classes, handleSubmit, pristine, submitting} = this.props;
+    const {classes, handleSubmit} = this.props;
     return (
       <Grid>
         <Grid item>

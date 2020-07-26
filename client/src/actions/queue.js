@@ -13,13 +13,10 @@ const receiveQueue = queue => ({
 });
 
 export const fetchAllQueues = queues => async (dispatch) => {
-  console.log("Fetching all queues...");
   return await QueueService.fetchAllQueues(queues)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
-        console.log("getQueues response data");
-        console.log(response.data);
         return dispatch(receiveAllQueues(response.data));
       } else {
         return dispatch(receiveErrors(response.data));
@@ -30,13 +27,10 @@ export const fetchAllQueues = queues => async (dispatch) => {
 };
 
 export const fetchQueue = queueId => async (dispatch) => {
-  console.log("Fetching queue...");
   return await QueueService.fetchQueue(queueId)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
-        console.log("getQueue response data");
-        console.log(response.data);
         return dispatch(receiveQueue(response.data));
       } else {
         return dispatch(receiveErrors(response.data));

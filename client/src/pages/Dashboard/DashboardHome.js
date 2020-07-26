@@ -4,18 +4,8 @@ import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
 import {fetchAllQueues} from "../../actions/queue";
 import Grid from "@material-ui/core/Grid";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import QueueTable from "./QueueTable";
 import isEmpty from 'is-empty'
-
-function parseDateTime(dateTime) {
-  return new Date(dateTime).toLocaleString('en-US');
-}
 
 const styles = theme => ({
   palette: {
@@ -47,7 +37,7 @@ class DashboardHome extends React.Component {
 
   render() {
 
-    const {classes} = this.props;
+    // const {classes} = this.props;
 
     return (
       <Grid container justify="center" spacing={4} style={{marginTop: 20, marginBottom: 20}}>
@@ -67,10 +57,7 @@ class DashboardHome extends React.Component {
 DashboardHome = withStyles(styles)(DashboardHome);
 
 const mapStateToProps = (state) => {
-  console.log("Mapping state to props from dashboard");
-  console.log(state);
   const {session, queueStore} = state;
-
   return {
     session,
     queues: queueStore.queues

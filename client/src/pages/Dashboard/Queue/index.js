@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 import {fetchQueue} from "../../../actions/queue";
 import {parseDateTime} from "../../../utils/utils";
 import Button from "@material-ui/core/Button";
-import Fab from "@material-ui/core/Fab";
 
 const styles = theme => ({
   palette: {
@@ -37,16 +36,13 @@ class Queue extends React.Component {
 
 
   componentDidMount() {
-    console.log("preparing to fetch the queue")
     this.props.fetchQueue(this.props.match.params.queueId);
   }
 
 
   render() {
-    console.log('The Queue props');
-    console.log(this.props);
 
-    const {classes} = this.props;
+    // const {classes} = this.props;
 
     const renderQueueInfo = () => {
       return (
@@ -104,11 +100,15 @@ class Queue extends React.Component {
         </Grid>
         {
           !isEmpty(this.props.queue) ? !isEmpty(this.props.queue.items) ?
-            <QueueItemTable rows={this.props.queue.items}/> : <QueueItemTable rows={[]}/> : null
+            <React.Fragment>
+              <QueueItemTable rows={this.props.queue.items}/>
+              <Button color="primary" variant="outlined" aria-label="add" onClick={() => alert("Feature coming soon!")}>
+                Join queue
+              </Button>
+            </React.Fragment>
+            : <QueueItemTable rows={[]}/>
+            : null
         }
-        <Fab color="primary" variant="outlined" aria-label="add" onClick={() => alert("Feature coming soon!")}>
-          Join queue
-        </Fab>
       </Grid>
     );
   }
@@ -117,8 +117,6 @@ class Queue extends React.Component {
 Queue = withStyles(styles)(Queue);
 
 const mapStateToProps = (state) => {
-  console.log("Mapping state to props from single Queue view");
-  console.log(state);
   const {session, queueStore} = state;
 
   return {

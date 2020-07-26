@@ -16,8 +16,6 @@ const Auth = ({loggedIn, path, component: Component}) => {
 };
 
 const Protected = (props) => {
-  console.log("Protected route props:");
-  console.log(props);
   const {loggedIn, path, component: Component} = props;
   return (
     <Route
@@ -33,8 +31,6 @@ const Protected = (props) => {
 
 const ProtectedAdmin = (props) => {
   const {loggedIn, isAdmin, path, component: Component} = props;
-  // console.log("Fucking protected admin bitches:");
-  // console.log(props);
   return (
     <Route
       path={path}
@@ -49,8 +45,6 @@ const ProtectedAdmin = (props) => {
 
 const mapStateToProps = (state) => {
   const {session: {userId, role}} = state;
-  console.log("mappingStateToProps");
-  console.log(state);
   return ({
     loggedIn: Boolean(userId),
     isAdmin: Boolean("admin" === role)

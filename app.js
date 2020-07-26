@@ -11,8 +11,6 @@ module.exports = function buildApp() {
   // Get an instance of an Express.js web server and start the logger
   const app = express();
   app.use(morgan('dev'));
-  console.log("Secret sesh:");
-  console.log(SESS_SECRET);
   // Use connect-mongo to handle adding cookies to the database
   const MongoStore = connectStore(session);
   app.use(session({

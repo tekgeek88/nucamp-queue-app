@@ -13,16 +13,12 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import {connect} from "react-redux";
-import {fetchAllQueues} from "../../actions/queue";
-import DashboardHome from "./DashboardHome";
 import history from "../../history";
 import {parseDateTime} from "../../utils/utils";
 
@@ -53,7 +49,6 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  // { id: '_id', align: 'left', disablePadding: true, label: 'id' },
   { id: 'name', align: 'left', disablePadding: false, label: 'Name' },
   { id: 'description', align: 'left', disablePadding: false, label: 'Description' },
   { id: 'items', align: 'right', disablePadding: false, label: 'Items' },
@@ -63,7 +58,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+  const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -71,14 +66,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {/*<TableCell padding="checkbox">*/}
-        {/*  <Checkbox*/}
-        {/*    indeterminate={numSelected > 0 && numSelected < rowCount}*/}
-        {/*    checked={rowCount > 0 && numSelected === rowCount}*/}
-        {/*    onChange={onSelectAllClick}*/}
-        {/*    inputProps={{ 'aria-label': 'select all desserts' }}*/}
-        {/*  />*/}
-        {/*</TableCell>*/}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -226,26 +213,9 @@ const EnhancedTable = (props) => {
 
   const handleClick = (event, _id) => {
     const selectedIndex = selected.indexOf(_id);
-    let newSelected = [];
     if (event.target.innerHTML) {
       history.push(`/dashboard/queue/${_id}`)
-      // style={{ textDecoration: 'none' }}
     }
-
-    // if (selectedIndex === -1) {
-    //   newSelected = newSelected.concat(selected, name);
-    // }
-    // else if (selectedIndex === 0) {
-    //   newSelected = newSelected.concat(selected.slice(1));
-    // } else if (selectedIndex === selected.length - 1) {
-    //   newSelected = newSelected.concat(selected.slice(0, -1));
-    // } else if (selectedIndex > 0) {
-    //   newSelected = newSelected.concat(
-    //     selected.slice(0, selectedIndex),
-    //     selected.slice(selectedIndex + 1),
-    //   );
-    // }
-
     setSelected(selectedIndex);
   };
 
@@ -269,7 +239,6 @@ const EnhancedTable = (props) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        {/*<EnhancedTableToolbar numSelected={selected.length} />*/}
         <TableContainer>
           <Table
             className={classes.table}
@@ -291,27 +260,16 @@ const EnhancedTable = (props) => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, row._id)}
-                      // role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row._id}
                       selected={isItemSelected}
                     >
-                      {/*<TableCell padding="checkbox">*/}
-                      {/*  <Checkbox*/}
-                      {/*    checked={isItemSelected}*/}
-                      {/*    inputProps={{ 'aria-labelledby': labelId }}*/}
-                      {/*  />*/}
-                      {/*</TableCell>*/}
-                      {/*<TableCell component="th" id={labelId} scope="row" padding="none">*/}
-                      {/*  {row._id}*/}
-                      {/*</TableCell>*/}
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">{row.description}</TableCell>
                       <TableCell align="right">{row.items.length}</TableCell>

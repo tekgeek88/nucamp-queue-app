@@ -71,9 +71,6 @@ class SignupForm extends React.Component {
   );
 
   onSubmit = (formValues) => {
-    console.log("Submitting signup form");
-    console.log("Form values:");
-    console.log(formValues);
     return this.props.signup(formValues).then(() => {
       const {errors, message} = this.props.error;
       if (!_.isEmpty(errors)) {

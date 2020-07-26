@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// TODO We should be using this for the base Axios configuration instead of setting up headers every call
 export default axios.create({
   baseURL: 'http://localhost:5000'
 });
@@ -24,8 +25,8 @@ export const login = async (user) => {
   return result;
 };
 
+// TODO: Need to convert this from fetch to axios
 export const logout = async () => {
-  console.log("Attempting to log out");
   return await fetch("/api/v1/user/logout", {
     method: "DELETE", headers: {
       'Content-Type': 'application/json',

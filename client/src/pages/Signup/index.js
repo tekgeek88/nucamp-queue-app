@@ -4,8 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import SignupForm from './SignupForm'
 
-const renderFromHelper = (touched, error) => !(touched && error) ? null : touched && error;
-
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,

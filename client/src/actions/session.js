@@ -13,12 +13,9 @@ const logoutCurrentUser = () => ({
 
 
 export const login = user => async (dispatch) => {
-  console.log("Hitting the login endpoint");
   return await QueueService.login(user)
     .then(response => {
       if (response.status === 200) {
-        console.log("response data");
-        console.log(response.data);
         dispatch(clearErrors());
         return dispatch(receiveCurrentUser(response.data));
       } else {
@@ -31,12 +28,9 @@ export const login = user => async (dispatch) => {
 
 
 export const signup = user => async dispatch => {
-  console.log("Hitting the signup endpoint");
   return await QueueService.signup(user)
     .then(response => {
       if (response.status === 200) {
-        console.log("response data");
-        console.log(response.data);
         dispatch(clearErrors());
         return dispatch(receiveCurrentUser(response.data));
       } else {
