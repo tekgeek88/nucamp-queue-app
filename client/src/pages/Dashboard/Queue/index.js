@@ -7,6 +7,7 @@ import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
 import {fetchQueue} from "../../../actions/queue";
 import {parseDateTime} from "../../../utils/utils";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   palette: {
@@ -104,6 +105,9 @@ class Queue extends React.Component {
           !isEmpty(this.props.queue) ? !isEmpty(this.props.queue.items) ?
             <QueueItemTable rows={this.props.queue.items}/> : <QueueItemTable rows={[]}/> : null
         }
+        <Button>
+          Join queue
+        </Button>
       </Grid>
     );
   }
