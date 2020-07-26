@@ -30,7 +30,7 @@ export default () => {
   return (
     <Container>
       <Typography>
-        Monkeying around on the Homepage!
+        Monkey'n around on the Homepage!
       </Typography>
       <Grid container alignItems="center" justify="center">
         <Grid item>

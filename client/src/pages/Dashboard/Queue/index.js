@@ -40,7 +40,6 @@ class Queue extends React.Component {
   }
 
 
-
   render() {
     console.log('The Queue props');
     console.log(this.props);
@@ -69,23 +68,31 @@ class Queue extends React.Component {
       );
     };
 
+    const renderQueueTitle = () => {
+      return (
+        <React.Fragment>
+          <Grid item>
+            <Typography variant='h5' component='h6' color="textSecondary" align="center">
+              {this.props.queue.name}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant='h5' component='h6' color="textSecondary" align="center">
+              {this.props.queue.description}
+            </Typography>
+          </Grid>
+        </React.Fragment>
+
+      );
+    };
+
     return (
       <Grid container
             direction="column"
             justify="flex-start"
             alignItems="center"
             style={{marginTop: 16, marginBottom: 16}}>
-        <Grid item>
-          <Typography variant='h5' component='h6' color="textSecondary" align="center">
-            {this.props.queue.name}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant='h5' component='h6' color="textSecondary" align="center">
-            {this.props.queue.description}
-          </Typography>
-        </Grid>
-
+        {!isEmpty(this.props.queue) ? renderQueueTitle() : null}
         <Grid container
               direction="column"
               justify="flex-start"
