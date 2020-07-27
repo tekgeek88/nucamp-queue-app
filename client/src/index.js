@@ -6,12 +6,12 @@ import configureStore from "./store/store";
 
 import App from './App';
 import {Router} from "react-router-dom";
-import {checkLoggedIn} from "./api/queueService";
+import {checkLoggedIn} from './actions/session'
 import history from './history';
 
 import * as serviceWorker from './serviceWorker';
 
-const renderApp = preloadedState => {
+const renderApp = async preloadedState => {
   const store = configureStore(preloadedState);
   ReactDOM.render(
       <Provider store={store}>

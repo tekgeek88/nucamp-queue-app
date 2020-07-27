@@ -1,6 +1,6 @@
 import {clearErrors, receiveErrors} from "./error";
 import {LOGOUT_CURRENT_USER, RECEIVE_CURRENT_USER} from "./actionTypes";
-import * as QueueService from '../api/queueService';
+import qService from "../api/qService";
 
 const receiveCurrentUser = user => ({
   type: RECEIVE_CURRENT_USER,
@@ -12,8 +12,34 @@ const logoutCurrentUser = () => ({
 });
 
 
-export const login = user => async (dispatch) => {
-  return await QueueService.login(user)
+export const checkLoggedIn = async () => {
+  const null_session = {
+    session: {
+      userId: null,
+      firstname: null,
+      lastname: null,
+      email: null,
+      role: "",
+    }
+  };
+  return await qService.get('/user/isLoggedIn')
+    .then(response => {
+      if (response.status === 200) {
+        const {user} = response.data;
+        if (user) {
+          return { session: user };
+        }
+      }
+      return null_session
+    })
+    .catch(err => {
+      // Maybe we should send a toast here or something
+    });
+};
+
+
+export const login = user => async dispatch => {
+  return await qService.post('/user/login', user)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
@@ -21,14 +47,14 @@ export const login = user => async (dispatch) => {
       } else {
         return dispatch(receiveErrors(response.data));
       }
-    }).catch(error => {
-      console.log(error);
+    }).catch(err => {
+      // Maybe we should send a toast here or something
     })
 };
 
 
 export const signup = user => async dispatch => {
-  return await QueueService.signup(user)
+  return await qService.post('/user/signup', user)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
@@ -36,17 +62,21 @@ export const signup = user => async dispatch => {
       } else {
         return dispatch(receiveErrors(response.data));
       }
-    }).catch(error => {
-      console.log(error);
+    }).catch(err => {
+      // Maybe we should send a toast here or something
     })
 };
 
 
 export const logout = () => async dispatch => {
-  const response = await QueueService.logout();
-  const data = await response;
-  if (response.ok) {
-    return dispatch(logoutCurrentUser());
-  }
-  return dispatch(receiveErrors(data));
+  return await qService.delete('/user/logout')
+    .then(response => {
+      if (response.status === 200) {
+        return dispatch(logoutCurrentUser());
+      } else {
+        dispatch(receiveErrors(response.data));
+      }
+    }).catch(err => {
+      // Maybe we should send a toast here or something
+    });
 };

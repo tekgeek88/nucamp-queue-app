@@ -6,6 +6,8 @@ import {fetchAllQueues} from "../../actions/queue";
 import Grid from "@material-ui/core/Grid";
 import QueueTable from "./QueueTable";
 import isEmpty from 'is-empty'
+import Button from "@material-ui/core/Button";
+import SimpleModal from "../../Components/SimpleModal";
 
 const styles = theme => ({
   palette: {
@@ -31,8 +33,45 @@ const styles = theme => ({
 
 class DashboardHome extends React.Component {
 
+  state = {
+    isOpen: false,
+  };
+
+  toggleOpen = () => {
+    this.setState({isOpen: !this.state.isOpen})
+  };
+
   componentDidMount() {
     this.props.fetchAllQueues();
+  }
+
+  renderModalContent() {
+    return `Create a queueu`
+  }
+
+  renderModalActions() {
+    return (
+      <Grid container alignItems="center" justify="center" spacing={4} style={{ marginTop: "16px"}}>
+        <Grid item>
+          <Button
+            color="secondary"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button
+            color="primary"
+            variant="contained"
+            // component={RouterLink}
+            to="/dashboard"
+          >
+            Cancel
+          </Button>
+        </Grid>
+      </Grid>
+    );
   }
 
   render() {
@@ -49,6 +88,18 @@ class DashboardHome extends React.Component {
         {
           !isEmpty(this.props.queues) ? <QueueTable rows={this.props.queues}/> : <QueueTable rows={[]}/>
         }
+        {
+          !isEmpty(this.props.queues) ?
+            <Button color="primary" variant="outlined" aria-label="add" onClick={this.toggleOpen} >
+            Create queue
+          </Button> : null
+        }
+        <SimpleModal
+          title="Create a queue"
+          content={this.renderModalContent()}
+          actions={this.renderModalActions()}
+          open={this.state.isOpen}
+        />
       </Grid>
     );
   };

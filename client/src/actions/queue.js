@@ -1,19 +1,22 @@
 import {RECEIVE_QUEUE, RECEIVE_QUEUES} from "./actionTypes";
 import {clearErrors, receiveErrors} from "./error";
-import * as QueueService from '../api/queueService';
+import qService from "../api/qService";
+
 
 const receiveAllQueues = queues => ({
   type: RECEIVE_QUEUES,
   payload: queues
 });
 
+
 const receiveQueue = queue => ({
   type: RECEIVE_QUEUE,
   payload: queue
 });
 
-export const fetchAllQueues = queues => async (dispatch) => {
-  return await QueueService.fetchAllQueues(queues)
+
+export const fetchAllQueues = () => async (dispatch) => {
+  return await qService.get('/queue')
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
@@ -21,13 +24,15 @@ export const fetchAllQueues = queues => async (dispatch) => {
       } else {
         return dispatch(receiveErrors(response.data));
       }
-    }).catch(error => {
-      console.log(error);
     })
+    .catch(err => {
+      // Maybe we should send a toast here or something
+    });
 };
 
+
 export const fetchQueue = queueId => async (dispatch) => {
-  return await QueueService.fetchQueue(queueId)
+  return await qService.get(`/queue/${queueId}`)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
@@ -36,7 +41,21 @@ export const fetchQueue = queueId => async (dispatch) => {
         return dispatch(receiveErrors(response.data));
       }
     }).catch(error => {
-      console.log(error);
+      // Maybe we should send a toast here or something
+    })
+};
+
+export const createQueue = nameAndDesc => async (dispatch) => {
+  return await qService.post(`/queue`, nameAndDesc)
+    .then(response => {
+      if (response.status === 200) {
+        dispatch(clearErrors());
+        return dispatch(receiveAllQueues(response.data));
+      } else {
+        return dispatch(receiveErrors(response.data));
+      }
+    }).catch(error => {
+      // Maybe we should send a toast here or something
     })
 };
 
