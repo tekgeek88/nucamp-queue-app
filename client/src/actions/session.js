@@ -2,10 +2,12 @@ import {clearErrors, receiveErrors} from "./error";
 import {LOGOUT_CURRENT_USER, RECEIVE_CURRENT_USER} from "./actionTypes";
 import qService from "../api/qService";
 
+
 const receiveCurrentUser = user => ({
   type: RECEIVE_CURRENT_USER,
   payload: user
 });
+
 
 const logoutCurrentUser = () => ({
   type: LOGOUT_CURRENT_USER
@@ -15,7 +17,7 @@ const logoutCurrentUser = () => ({
 export const checkLoggedIn = async () => {
   const null_session = {
     session: {
-      userId: null,
+      _id: null,
       firstname: null,
       lastname: null,
       email: null,
@@ -43,15 +45,12 @@ export const login = user => async dispatch => {
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
-        alert("200 ok");
         return dispatch(receiveCurrentUser(response.data));
       } else {
-        alert("Dispatching errors");
         return dispatch(receiveErrors(response.data));
       }
     }).catch(err => {
-      console.log(err);
-      alert(err);
+      // Maybe we should send a toast here or something
     })
 };
 

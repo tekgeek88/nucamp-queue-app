@@ -24,7 +24,8 @@ const QueueItemSchema = new Schema({
 const QueueSchema = new Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   name: {
     type: String,

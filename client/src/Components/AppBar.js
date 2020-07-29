@@ -106,9 +106,9 @@ const CustomAppBar = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const {session: {userId}} = state;
+  const {session: {_id}} = state;
   return ({
-    isLoggedIn: Boolean(userId),
+    isLoggedIn: Boolean(_id),
   });
 };
 

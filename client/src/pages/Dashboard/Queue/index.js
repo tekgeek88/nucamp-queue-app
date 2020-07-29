@@ -5,7 +5,7 @@ import isEmpty from "is-empty";
 import QueueItemTable from "./QueueItemTable";
 import {withStyles} from "@material-ui/core/styles";
 import {connect} from "react-redux";
-import {fetchQueue} from "../../../actions/queue";
+import {createQueueItem, fetchQueue} from "../../../actions/queue";
 import {parseDateTime} from "../../../utils/utils";
 import Button from "@material-ui/core/Button";
 
@@ -33,7 +33,21 @@ const styles = theme => ({
 
 
 class Queue extends React.Component {
+  state = {isOpen: false};
 
+  handleClickOpen = () => {
+    this.setState({isOpen: true});
+  };
+
+  handleClose = () => {
+    this.setState({isOpen: false});
+  };
+
+  onSubmit = (formValues) => {
+    console.log(formValues);
+    this.props.createQueueItem(formValues);
+    this.handleClose()
+  };
 
   componentDidMount() {
     this.props.fetchQueue(this.props.match.params.queueId);
@@ -89,7 +103,8 @@ class Queue extends React.Component {
             direction="column"
             justify="flex-start"
             alignItems="center"
-            style={{marginTop: 16, marginBottom: 16}}>
+            style={{marginTop: 16, marginBottom: 16}}
+      >
         {!isEmpty(this.props.queue) ? renderQueueTitle() : null}
         <Grid container
               direction="column"
@@ -102,11 +117,13 @@ class Queue extends React.Component {
           !isEmpty(this.props.queue) ? !isEmpty(this.props.queue.items) ?
             <React.Fragment>
               <QueueItemTable rows={this.props.queue.items}/>
+            </React.Fragment>
+            : <React.Fragment>
+              <QueueItemTable rows={[]}/>
               <Button color="primary" variant="outlined" aria-label="add" onClick={() => alert("Feature coming soon!")}>
                 Join queue
               </Button>
             </React.Fragment>
-            : <QueueItemTable rows={[]}/>
             : null
         }
       </Grid>
@@ -127,7 +144,8 @@ const mapStateToProps = (state) => {
 
 Queue = connect(
   mapStateToProps, {
-    fetchQueue
+    fetchQueue,
+    createQueueItem
   }
 )(Queue);
 

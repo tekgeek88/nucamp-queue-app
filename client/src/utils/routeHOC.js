@@ -44,9 +44,9 @@ const ProtectedAdmin = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  const {session: {userId, role}} = state;
+  const {session: {_id, role}} = state;
   return ({
-    loggedIn: Boolean(userId),
+    loggedIn: Boolean(_id),
     isAdmin: Boolean("admin" === role)
   });
 };

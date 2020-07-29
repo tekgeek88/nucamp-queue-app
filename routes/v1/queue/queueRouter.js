@@ -1,9 +1,11 @@
+import auth_required from "../../../middleware/auth_required";
+
 var express = require('express');
 var router = express.Router({mergeParams: true});
 import Queue from "../../../database/schemas/queue";
 
 /* GET: Get all queues */
-router.route('/').get((req, res, next) => {
+router.route('/', auth_required).get((req, res, next) => {
   Queue.find()
     .populate('owner', {
       _id: 1,
@@ -28,24 +30,43 @@ router.route('/').get((req, res, next) => {
 /* POST: Create a queue */
 router.route('/').post(async (req, res) => {
   try {
-    const {id} = req.session.user;
+    console.log(req.session);
+    const {_id} = req.session.user;
     const {name, description} = req.body;
 
-    console.log("Creating queue for: " + id);
+    console.log("Creating queue for: " + _id);
 
     const queue = new Queue({
-      owner: id,
+      owner: _id,
       name,
       description
     });
     await queue.save();
-    res.status(200).json(queue);
+    await Queue.find()
+      .populate('owner', {
+        _id: 1,
+        firstname: 1,
+        lastname: 1,
+        email: 1
+      })
+      .populate('items.userId', {
+        _id: 1,
+        firstname: 1,
+        lastname: 1,
+        email: 1
+      })
+      .then(queues => {
+        return res.status(200).json(queues);
+      })
+      .catch(err => {
+        next(err)
+      });
 
   } catch (err) {
-    console.log(error);
+    console.log(err);
     return res.status(400).json({
       success: false,
-      message: error.message,
+      message: err.message,
       errors: []
     });
   }

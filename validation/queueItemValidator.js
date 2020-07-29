@@ -7,7 +7,7 @@ export default async function validateQueueItem(req) {
   let errors = [];
 
   let {userId} = req.body;
-  userId = userId ? userId : req.session.user.id;
+  userId = userId ? userId : req.session.user._id;
   let user = null;
   let queue = null;
 
@@ -18,7 +18,7 @@ export default async function validateQueueItem(req) {
       return {errors}
     }
 
-    user = await User.findById({_id: userId});
+    user = await User.findById({_id});
     if (!user) {
       errors.push({"userId": "A valid UserID is required"});
       return {errors}

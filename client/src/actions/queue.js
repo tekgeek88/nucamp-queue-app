@@ -26,6 +26,7 @@ export const fetchAllQueues = () => async (dispatch) => {
       }
     })
     .catch(err => {
+      alert(err)
       // Maybe we should send a toast here or something
     });
 };
@@ -40,17 +41,33 @@ export const fetchQueue = queueId => async (dispatch) => {
       } else {
         return dispatch(receiveErrors(response.data));
       }
+    }).catch(err => {
+      // Maybe we should send a toast here or something
+    })
+};
+
+export const createQueue = nameAndDescription => async (dispatch) => {
+  return await qService.post(`/queue`, nameAndDescription)
+    .then(response => {
+      console.log("Resonse =");
+      console.log(response);
+      if (response.status === 200) {
+        dispatch(clearErrors());
+        return dispatch(receiveAllQueues(response.data));
+      } else {
+        return dispatch(receiveErrors(response.data));
+      }
     }).catch(error => {
       // Maybe we should send a toast here or something
     })
 };
 
-export const createQueue = nameAndDesc => async (dispatch) => {
-  return await qService.post(`/queue`, nameAndDesc)
+export const createQueueItem = (queueId) => async (dispatch) => {
+  return await qService.post(`/queue/${queueId}/item`)
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
-        return dispatch(receiveAllQueues(response.data));
+        return dispatch(receiveQueue(response.data));
       } else {
         return dispatch(receiveErrors(response.data));
       }

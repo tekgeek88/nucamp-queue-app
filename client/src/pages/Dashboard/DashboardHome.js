@@ -2,12 +2,18 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
-import {fetchAllQueues} from "../../actions/queue";
+import {createQueue, fetchAllQueues} from "../../actions/queue";
 import Grid from "@material-ui/core/Grid";
 import QueueTable from "./QueueTable";
 import isEmpty from 'is-empty'
 import Button from "@material-ui/core/Button";
-import SimpleModal from "../../Components/SimpleModal";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import TextField from "@material-ui/core/TextField";
+import DialogActions from "@material-ui/core/DialogActions";
+import Dialog from "@material-ui/core/Dialog";
+import {Field, reduxForm} from "redux-form";
 
 const styles = theme => ({
   palette: {
@@ -31,52 +37,50 @@ const styles = theme => ({
   },
 });
 
-class DashboardHome extends React.Component {
+const renderTextField = ({
+                           input, label,
+                           meta: {touched, invalid, error},
+                           ...custom
+                         }) => (
+  <TextField
+    style={{marginTop: '1px'}}
+    label={label}
+    placeholder={label}
+    error={touched && invalid}
+    helperText={touched && invalid && error}
+    margin="dense"
+    fullWidth
 
-  state = {
-    isOpen: false,
+    {...input}
+    {...custom}
+  />
+);
+
+class DashboardHome extends React.Component {
+  state = {isOpen: false};
+
+  handleClickOpen = () => {
+    this.setState({isOpen: true});
   };
 
-  toggleOpen = () => {
-    this.setState({isOpen: !this.state.isOpen})
+  handleClose = () => {
+    this.setState({isOpen: false});
+  };
+
+  onSubmit = (formValues) => {
+    console.log(formValues);
+    this.props.createQueue(formValues);
+    this.handleClose()
   };
 
   componentDidMount() {
     this.props.fetchAllQueues();
   }
 
-  renderModalContent() {
-    return `Create a queueu`
-  }
-
-  renderModalActions() {
-    return (
-      <Grid container alignItems="center" justify="center" spacing={4} style={{ marginTop: "16px"}}>
-        <Grid item>
-          <Button
-            color="secondary"
-            variant="contained"
-          >
-            Delete
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button
-            color="primary"
-            variant="contained"
-            // component={RouterLink}
-            to="/dashboard"
-          >
-            Cancel
-          </Button>
-        </Grid>
-      </Grid>
-    );
-  }
-
   render() {
 
     // const {classes} = this.props;
+    const {queues} = this.props;
 
     return (
       <Grid container justify="center" spacing={4} style={{marginTop: 20, marginBottom: 20}}>
@@ -86,20 +90,47 @@ class DashboardHome extends React.Component {
           </Typography>
         </Grid>
         {
-          !isEmpty(this.props.queues) ? <QueueTable rows={this.props.queues}/> : <QueueTable rows={[]}/>
+          !isEmpty(queues) ? <QueueTable rows={queues}/> : <QueueTable rows={[]}/>
         }
         {
-          !isEmpty(this.props.queues) ?
-            <Button color="primary" variant="outlined" aria-label="add" onClick={this.toggleOpen} >
+          <Button color="primary" variant="outlined" aria-label="add" onClick={this.handleClickOpen}>
             Create queue
-          </Button> : null
+          </Button>
         }
-        <SimpleModal
-          title="Create a queue"
-          content={this.renderModalContent()}
-          actions={this.renderModalActions()}
-          open={this.state.isOpen}
-        />
+        <Dialog open={this.state.isOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Create Queue</DialogTitle>
+          <form
+            onSubmit={this.props.handleSubmit(this.onSubmit)}
+          >
+            <DialogContent>
+              <DialogContentText>
+                Give your queue a name and description to allow people to queue up at your location.
+              </DialogContentText>
+              <Field
+                id="name"
+                name="name"
+                label="Queue name"
+                component={renderTextField}
+                required
+              />
+              <Field
+                id="description"
+                name="description"
+                label="Queue description"
+                component={renderTextField}
+                required
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button type="submit" color="primary">
+                Submit
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
       </Grid>
     );
   };
@@ -115,11 +146,16 @@ const mapStateToProps = (state) => {
   }
 };
 
+
 DashboardHome = connect(
   mapStateToProps, {
-    fetchAllQueues
+    fetchAllQueues,
+    createQueue
   }
 )(DashboardHome);
 
+DashboardHome = reduxForm({
+  form: 'createQueueForm' // a unique identifier for this form
+})(DashboardHome);
 
 export default DashboardHome;
