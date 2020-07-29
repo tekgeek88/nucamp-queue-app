@@ -5,6 +5,7 @@ import {ProtectedRoute} from "../../utils/routeHOC";
 import {withStyles} from '@material-ui/core/styles';
 import DashboardHome from "./DashboardHome";
 import Queue from "./Queue";
+import FormDialog from "./FormDialog";
 
 const styles = theme => ({
   paper: {
@@ -19,6 +20,7 @@ let Dashboard = (props) => {
     <Switch>
       <ProtectedRoute exact path="/dashboard" component={DashboardHome}/>
       <ProtectedRoute exact path="/dashboard/queue/:queueId" component={Queue}/>
+      <ProtectedRoute exact path="/dashboard/dialog" component={FormDialog()}/>
     </Switch>
   );
 };

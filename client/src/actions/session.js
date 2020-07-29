@@ -43,12 +43,15 @@ export const login = user => async dispatch => {
     .then(response => {
       if (response.status === 200) {
         dispatch(clearErrors());
+        alert("200 ok");
         return dispatch(receiveCurrentUser(response.data));
       } else {
+        alert("Dispatching errors");
         return dispatch(receiveErrors(response.data));
       }
     }).catch(err => {
-      // Maybe we should send a toast here or something
+      console.log(err);
+      alert(err);
     })
 };
 
