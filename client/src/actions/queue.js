@@ -49,8 +49,6 @@ export const fetchQueue = queueId => async (dispatch) => {
 export const createQueue = nameAndDescription => async (dispatch) => {
   return await qService.post(`/queue`, nameAndDescription)
     .then(response => {
-      console.log("Resonse =");
-      console.log(response);
       if (response.status === 200) {
         dispatch(clearErrors());
         return dispatch(receiveAllQueues(response.data));

@@ -34,8 +34,6 @@ router.route('/').post(async (req, res) => {
     const {_id} = req.session.user;
     const {name, description} = req.body;
 
-    console.log("Creating queue for: " + _id);
-
     const queue = new Queue({
       owner: _id,
       name,

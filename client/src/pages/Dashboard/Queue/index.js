@@ -120,7 +120,7 @@ class Queue extends React.Component {
             </React.Fragment>
             : <React.Fragment>
               <QueueItemTable rows={[]}/>
-              <Button color="primary" variant="outlined" aria-label="add" onClick={() => alert("Feature coming soon!")}>
+              <Button color="primary" variant="outlined" aria-label="add" onClick={() => this.props.createQueueItem(this.props.match.params.queueId)}>
                 Join queue
               </Button>
             </React.Fragment>

@@ -14,24 +14,28 @@ export default async function validateQueueItem(req) {
   try {
     queue = await Queue.findById({_id: req.params.queueId});
     if (!queue) {
-      errors.push({"queue": "A valid QueueID is required"});
+      errors.push({"queue": "A valid QueueId is required"});
       return {errors}
     }
 
-    user = await User.findById({_id});
+    user = await User.findById({_id: userId});
     if (!user) {
-      errors.push({"userId": "A valid UserID is required"});
+      errors.push({"userId": "A valid UserId is required"});
       return {errors}
     }
+
+    const duplicates = queue.items.filter(item => String(item.userId) === String(userId));
+
+    if (!isEmpty(duplicates)) {
+      errors.push({"userId": "That UserId already exists in the queue"});
+    }
   } catch (err) {
-    errors.push({"queue": "validateLoginInput failed something fierce"});
+    errors.push({"queue": "validateQueueItem failed something fierce"});
+    console.log(err)
   }
 
   console.log("Looking for duplicate userIds in the queue");
-  const duplicates = queue.items.filter(item => String(item.userId) === String(userId));
-  if (!isEmpty(duplicates)) {
-    errors.push({"userId": "That UserId already exists in the queue"});
-  }
+
   return {
     errors
   };

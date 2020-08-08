@@ -18,16 +18,11 @@ router.get('/', async (req, res) => {
       })
       .sort({createdOn: 1})
       .select({items: 1});
-    console.log("The fucking items");
-    console.log(items);
     if (!isEmpty(items)) {
       let item = {};
       if (!isEmpty(items.items)) {
         item = items.items[0];
       }
-
-      console.log("items:");
-      console.log(item);
       return res.status(200).json({
         success: true,
         item: {
@@ -85,10 +80,10 @@ router.put('/:queueItemId', async (req, res, next) => {
         // }
 
       }
-      // else if (!queue) {
-      //   err = new Error(`Campsite ${req.params.campsiteId} not found`);
-      //   err.status = 404;
-      //   return next(err);
+        // else if (!queue) {
+        //   err = new Error(`Campsite ${req.params.campsiteId} not found`);
+        //   err.status = 404;
+        //   return next(err);
       // }
       else {
         err = new Error(`Queue item ${req.params.queueItemId} not found`);
@@ -104,7 +99,7 @@ router.post('/', async (req, res) => {
 
   try {
     let {userId} = req.body;
-    userId = userId ? userId : req.session.user.id;
+    userId = userId ? userId : req.session.user._id;
     // Form validation
     const {errors} = await queueItemValidator(req);
 
@@ -115,8 +110,8 @@ router.post('/', async (req, res) => {
         errors
       })
     }
-
-    const queue = await Queue.findById({_id: req.params.queueId});
+    console.log("Finished checking for errors");
+    let queue = await Queue.findById({_id: req.params.queueId});
 
     if (!queue) {
       return res.stat(400).json({
@@ -124,16 +119,27 @@ router.post('/', async (req, res) => {
         message: "Queue not found!"
       })
     }
+    await queue.items.push({userId});
+    await queue.save();
 
-    queue.items.push({
-      userId
-    });
-    queue.save();
+    queue = await Queue.findById(req.params.queueId)
+      .populate('owner', {
+        _id: 1,
+        firstname: 1,
+        lastname: 1,
+        email: 1
+      })
+      .populate('items.userId', {
+        _id: 1,
+        firstname: 1,
+        lastname: 1,
+        email: 1
+      });
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: `Added ${userId} to queue`
-    })
+      queue
+    });
 
   } catch (err) {
     console.log(err);
