@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {createQueueItem, fetchQueue} from "../../../actions/queue";
 import {parseDateTime} from "../../../utils/utils";
 import Button from "@material-ui/core/Button";
+import { CustomDialog } from "../../../Components/CustomDialog";
 
 const styles = theme => ({
   palette: {
@@ -33,26 +34,10 @@ const styles = theme => ({
 
 
 class Queue extends React.Component {
-  state = {isOpen: false};
-
-  handleClickOpen = () => {
-    this.setState({isOpen: true});
-  };
-
-  handleClose = () => {
-    this.setState({isOpen: false});
-  };
-
-  onSubmit = (formValues) => {
-    console.log(formValues);
-    this.props.createQueueItem(formValues);
-    this.handleClose()
-  };
 
   componentDidMount() {
     this.props.fetchQueue(this.props.match.params.queueId);
   }
-
 
   render() {
 
@@ -123,8 +108,10 @@ class Queue extends React.Component {
               <Button color="primary" variant="outlined" aria-label="add" onClick={() => this.props.createQueueItem(this.props.match.params.queueId)}>
                 Join queue
               </Button>
+
             </React.Fragment>
             : null
+
         }
       </Grid>
     );

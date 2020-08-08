@@ -21,6 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import history from "../../../history";
 import {parseDateTime} from "../../../utils/utils";
+import {CustomDialog} from "../../../Components/CustomDialog";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -191,10 +192,19 @@ const QueueItemTable = (props) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState("");
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleDialogOpen = () => {
+    setIsOpen(true)
+  };
+
+  const handleDialogClose = () => {
+    setIsOpen(false)
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -202,22 +212,16 @@ const QueueItemTable = (props) => {
     setOrderBy(property);
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = props.rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleClick = (event, _id) => {
-    const selectedIndex = selected.indexOf(_id);
+    // const selectedIndex = selected.indexOf(_id);
     if (event.target.innerHTML) {
-      history.push(`/dashboard/queue/${_id}/item`)
+      setSelected(_id);
+      handleDialogOpen();
+
+      // history.push(`/dashboard/queue/${_id}/item`)
     }
 
-    setSelected(selectedIndex);
+    // setSelected(selectedIndex);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -233,7 +237,7 @@ const QueueItemTable = (props) => {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (_id) => selected.indexOf(_id) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, props.rows.length - page * rowsPerPage);
 
@@ -253,10 +257,9 @@ const QueueItemTable = (props) => {
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={props.rows.length}
-            />
+             onSelectAllClick={null}/>
             <TableBody>
               {stableSort(props.rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -302,6 +305,14 @@ const QueueItemTable = (props) => {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       />
+      <CustomDialog
+        isOpen={isOpen}
+        handleClose={handleDialogClose}
+        title='Update Roles for User'
+      >
+        <h1>Hi There!</h1>
+        <h1>{`Selected index: ${selected}`}</h1>
+      </CustomDialog>
     </div>
   );
 };
